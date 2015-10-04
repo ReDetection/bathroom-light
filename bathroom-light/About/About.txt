@@ -1,0 +1,18 @@
+ 	
+	embedXcode
+	embedXcode+
+	----------------------------------
+	Embedded Computing on Xcode
+	
+	
+	© Rei VILO, 2010-2015
+	All rights reserved	
+	http://embedXcode.weebly.com/
+	
+	
+embedXcode+ • Jul 17, 2015 release 299 • Stability enhancements for Energia MT 
+embedXcode  • Jul 17, 2015 release 299 • Stability enhancements for Energia MT 
+embedXcode Tools • Jul 09, 2015 release 298 • Updated support for mbed 102
+
+	
+	
