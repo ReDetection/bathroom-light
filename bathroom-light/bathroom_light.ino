@@ -17,19 +17,79 @@
 //
 
 #include "Arduino.h"
+#include "LightLogic.h"
 
-uint8_t myLED;
+uint8_t ledsPin = 9;
+uint8_t movementPin = 10;
+uint8_t durationButton = 11;
+uint8_t brightnessButton = 12;
+uint8_t hallBrightnessPin = A0;
+uint8_t bathBrightnessPin = A1;
 
+LightState state;
+int currentBrightness = 0;
+unsigned long lastDurationAdd;
+unsigned long lastBrightnessSwitch;
+unsigned long lastMinuteTick;
 
 void setup() {
-    myLED = 13;
-    
-    pinMode(myLED, OUTPUT);
+    pinMode(ledsPin, OUTPUT);
+    pinMode(movementPin, INPUT);
+    pinMode(durationButton, INPUT);
+    pinMode(brightnessButton, INPUT);
+    pinMode(hallBrightnessPin, INPUT);
+    pinMode(bathBrightnessPin, INPUT);
+    Serial.begin(9600);
 }
 
 void loop() {
-    digitalWrite(myLED, HIGH);
-    delay(500);
-    digitalWrite(myLED, LOW);
-    delay(500);
+    
+    if (digitalRead(movementPin) == HIGH) {
+        
+        Serial.println("triggered movement");
+        Bright hall = hallBrightFromRaw(analogRead(hallBrightnessPin));
+        Bright bath = bathBrightFromRaw(analogRead(bathBrightnessPin));
+        state = movementTriggered(state, hall, bath);
+        
+    }
+    
+    unsigned long now = millis();
+    
+    if (digitalRead(durationButton) == HIGH && (now - lastDurationAdd) > 200) {
+        state = addMinutes(state, 10);
+        lastDurationAdd = now;
+    }
+    
+    if (digitalRead(brightnessButton) == HIGH && (now - lastBrightnessSwitch) > 200) {
+        state = changeBrightness(state);
+        lastBrightnessSwitch = now;
+    }
+    
+    if (state.minutesLeft > 0 && now - lastMinuteTick >= 60000) {
+        state.minutesLeft--;
+        lastMinuteTick = now;
+    }
+    
+    int newBrightness = ledsBrightnessFromState(state);
+    if (currentBrightness < newBrightness) {
+        currentBrightness+= 1 + currentBrightness/10;
+        currentBrightness = currentBrightness > newBrightness ? newBrightness : currentBrightness;
+    } else if (currentBrightness > newBrightness) {
+        currentBrightness-= 1 + currentBrightness/10;
+        currentBrightness = currentBrightness < newBrightness ? newBrightness : currentBrightness;
+    }
+    
+    
+    Serial.print("now = " );
+    Serial.print(now);
+    Serial.print(", minutesLeft = ");
+    Serial.print(state.minutesLeft);
+    Serial.print(", newB = ");
+    Serial.print(newBrightness);
+    Serial.print(", currentB = ");
+    Serial.println(currentBrightness);
+    
+    analogWrite(ledsPin, currentBrightness);
+    
+    delay(12);
 }
