@@ -40,7 +40,7 @@ LightState addMinutes(LightState state, int minutes) {
 }
 
 Bright hallBrightFromRaw(int brightness) {
-    return brightness > 100 ? 1 : 0;
+    return brightness > 20 ? 1 : 0;
 }
 
 Bright bathBrightFromRaw(int brightness) {
