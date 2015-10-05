@@ -21,9 +21,11 @@
  
  */
 
+#define trigger_minutes 3
+
 LightState movementTriggered(LightState state, Bright hallBright, Bright bathBright) {
     state.bright = state.minutesLeft > 0 ? state.bright : hallBright;
-    state.minutesLeft = state.minutesLeft < 5 ? 5 : state.minutesLeft;
+    state.minutesLeft = state.minutesLeft < trigger_minutes ? trigger_minutes : state.minutesLeft;
     return state;
 }
 
