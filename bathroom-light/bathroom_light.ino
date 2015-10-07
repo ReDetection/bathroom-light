@@ -18,6 +18,7 @@
 
 #include "Arduino.h"
 #include "LightLogic.h"
+#include "Fader.h"
 
 uint8_t ledsPin = 9;
 uint8_t movementPin = 10;
@@ -27,7 +28,7 @@ uint8_t hallBrightnessPin = A0;
 uint8_t bathBrightnessPin = A1;
 
 LightState state;
-int currentBrightness = 0;
+Fader fader;
 unsigned long lastDurationAdd;
 unsigned long lastBrightnessSwitch;
 unsigned long lastMinuteTick;
@@ -70,15 +71,8 @@ void loop() {
         lastMinuteTick = now;
     }
     
-    int newBrightness = ledsBrightnessFromState(state);
-    if (currentBrightness < newBrightness) {
-        currentBrightness+= 1 + currentBrightness/10;
-        currentBrightness = currentBrightness > newBrightness ? newBrightness : currentBrightness;
-    } else if (currentBrightness > newBrightness) {
-        currentBrightness-= 1 + currentBrightness/10;
-        currentBrightness = currentBrightness < newBrightness ? newBrightness : currentBrightness;
-    }
-    
+    fader.targetBrightness = ledsBrightnessFromState(state);
+    fader.loop();
     
     Serial.print("now = " );
     Serial.print(now);
@@ -89,7 +83,7 @@ void loop() {
     Serial.print(", currentB = ");
     Serial.println(currentBrightness);
     
-    analogWrite(ledsPin, currentBrightness);
+    analogWrite(ledsPin, fader.currentBrightness);
     
     delay(12);
 }
