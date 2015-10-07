@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		362FCB911BC1047400F1C2DC /* LocalLibrary.h in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCB911BC1047400F1C2DC /* LocalLibrary.h */; };
 		362FCC071BC1047500F1C2DC /* bathroom_light.ino in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC071BC1047500F1C2DC /* bathroom_light.ino */; };
 		36CFCB8B1BC1047400F1C2DC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCB8A1BC1047400F1C2DC /* main.cpp */; };
-		36CFCB901BC1047400F1C2DC /* LocalLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCB8F1BC1047400F1C2DC /* LocalLibrary.cpp */; };
 		36CFCC1C1BC1058E00F1C2DC /* bathroom_light.ino in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC071BC1047500F1C2DC /* bathroom_light.ino */; };
 		36CFCC261BC1451000F1C2DC /* LightLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC241BC1451000F1C2DC /* LightLogic.cpp */; };
 		AA2A151004130016AA000005 /* Arduino.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA151004130016AA000005 /* Arduino.h */; };
@@ -297,8 +295,6 @@
 		36CFCB8A1BC1047400F1C2DC /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		36CFCB8C1BC1047400F1C2DC /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		36CFCB8E1BC1047400F1C2DC /* ReadMe.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
-		36CFCB8F1BC1047400F1C2DC /* LocalLibrary.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LocalLibrary.cpp; sourceTree = "<group>"; };
-		36CFCB911BC1047400F1C2DC /* LocalLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalLibrary.h; sourceTree = "<group>"; };
 		36CFCB931BC1047400F1C2DC /* Sketchbook.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Sketchbook.txt; path = Sketchbook/Sketchbook.txt; sourceTree = "<group>"; };
 		36CFCB951BC1047400F1C2DC /* 4D Systems PICadillo 35T.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "4D Systems PICadillo 35T.xcconfig"; path = "Configurations/4D Systems PICadillo 35T.xcconfig"; sourceTree = "<group>"; };
 		36CFCB961BC1047400F1C2DC /* Adafruit Pro Trinket 3V-12MHz.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Adafruit Pro Trinket 3V-12MHz.xcconfig"; path = "Configurations/Adafruit Pro Trinket 3V-12MHz.xcconfig"; sourceTree = "<group>"; };
@@ -717,8 +713,6 @@
 				36CFCB8A1BC1047400F1C2DC /* main.cpp */,
 				36CFCB8C1BC1047400F1C2DC /* Makefile */,
 				36CFCB8E1BC1047400F1C2DC /* ReadMe.txt */,
-				36CFCB8F1BC1047400F1C2DC /* LocalLibrary.cpp */,
-				36CFCB911BC1047400F1C2DC /* LocalLibrary.h */,
 				36CFCBA51BC1047500F1C2DC /* Particle Core (USB).xcconfig */,
 				36CFCC071BC1047500F1C2DC /* bathroom_light.ino */,
 				36CFCC241BC1451000F1C2DC /* LightLogic.cpp */,
@@ -1555,8 +1549,6 @@
 			files = (
 				36CFCC1C1BC1058E00F1C2DC /* bathroom_light.ino in Sources */,
 				36CFCB8B1BC1047400F1C2DC /* main.cpp in Sources */,
-				36CFCB901BC1047400F1C2DC /* LocalLibrary.cpp in Sources */,
-				362FCB911BC1047400F1C2DC /* LocalLibrary.h in Sources */,
 				362FCC071BC1047500F1C2DC /* bathroom_light.ino in Sources */,
 				AA2A151004130016AA000005 /* Arduino.h in Sources */,
 				AA2A151004130016AA000006 /* CDC.cpp in Sources */,
