@@ -40,14 +40,11 @@ void setup() {
     pinMode(brightnessButton, INPUT);
     pinMode(hallBrightnessPin, INPUT);
     pinMode(bathBrightnessPin, INPUT);
-    Serial.begin(9600);
 }
 
 void loop() {
     
     if (digitalRead(movementPin) == HIGH) {
-        
-        Serial.println("triggered movement");
         Bright hall = hallBrightFromRaw(analogRead(hallBrightnessPin));
         Bright bath = bathBrightFromRaw(analogRead(bathBrightnessPin));
         state = movementTriggered(state, hall, bath);
@@ -73,15 +70,6 @@ void loop() {
     
     fader.targetBrightness = ledsBrightnessFromState(state);
     fader.loop();
-    
-    Serial.print("now = " );
-    Serial.print(now);
-    Serial.print(", minutesLeft = ");
-    Serial.print(state.minutesLeft);
-    Serial.print(", newB = ");
-    Serial.print(newBrightness);
-    Serial.print(", currentB = ");
-    Serial.println(currentBrightness);
     
     analogWrite(ledsPin, fader.currentBrightness);
     
