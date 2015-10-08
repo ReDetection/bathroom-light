@@ -19,6 +19,7 @@
 #include "Arduino.h"
 #include "LightLogic.h"
 #include "Fader.h"
+#include "SevSeg.h"
 
 uint8_t ledsPin = 9;
 uint8_t movementPin = 10;
@@ -29,6 +30,7 @@ uint8_t bathBrightnessPin = A1;
 
 LightState state;
 Fader fader;
+SevSeg display;
 unsigned long lastDurationAdd;
 unsigned long lastBrightnessSwitch;
 unsigned long lastMinuteTick;
@@ -41,6 +43,11 @@ void setup() {
     pinMode(hallBrightnessPin, INPUT);
     pinMode(bathBrightnessPin, INPUT);
     Serial.begin(9600);
+    
+    byte digitPins[] = {A5, A4, A3};
+    byte segmentPins[] = {2,3,4,5,6,7,8,13};
+    display.begin(COMMON_CATHODE, 3, digitPins, segmentPins);
+    display.setBrightness(10);
 }
 
 void loop() {
@@ -82,6 +89,9 @@ void loop() {
     Serial.print(newBrightness);
     Serial.print(", currentB = ");
     Serial.println(currentBrightness);
+    display.setNumber(state.minutesLeft > 999 ? 999 : state.minutesLeft, 0);
+    display.refreshDisplay();
+    
     
     analogWrite(ledsPin, fader.currentBrightness);
     

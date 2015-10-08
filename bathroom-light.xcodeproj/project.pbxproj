@@ -11,6 +11,8 @@
 		36CFCB8B1BC1047400F1C2DC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCB8A1BC1047400F1C2DC /* main.cpp */; };
 		36CFCC1C1BC1058E00F1C2DC /* bathroom_light.ino in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC071BC1047500F1C2DC /* bathroom_light.ino */; };
 		36CFCC261BC1451000F1C2DC /* LightLogic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC241BC1451000F1C2DC /* LightLogic.cpp */; };
+		36CFCC2B1BC6452400F1C2DC /* SevSeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC291BC5647F00F1C2DC /* SevSeg.cpp */; };
+		36CFCC2C1BC6452900F1C2DC /* Fader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36CFCC271BC54C3600F1C2DC /* Fader.cpp */; };
 		AA2A151004130016AA000005 /* Arduino.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA151004130016AA000005 /* Arduino.h */; };
 		AA2A151004130016AA000006 /* CDC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAAA151004130016AA000006 /* CDC.cpp */; };
 		AA2A151004130016AA000007 /* Client.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA151004130016AA000007 /* Client.h */; };
@@ -411,6 +413,8 @@
 		36CFCC251BC1451000F1C2DC /* LightLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightLogic.h; sourceTree = "<group>"; };
 		36CFCC271BC54C3600F1C2DC /* Fader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fader.cpp; sourceTree = "<group>"; };
 		36CFCC281BC54C3600F1C2DC /* Fader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fader.h; sourceTree = "<group>"; };
+		36CFCC291BC5647F00F1C2DC /* SevSeg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SevSeg.cpp; sourceTree = "<group>"; };
+		36CFCC2A1BC5647F00F1C2DC /* SevSeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SevSeg.h; sourceTree = "<group>"; };
 		AAAA151004130016AA000005 /* Arduino.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arduino.h; sourceTree = "<group>"; };
 		AAAA151004130016AA000006 /* CDC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDC.cpp; sourceTree = "<group>"; };
 		AAAA151004130016AA000007 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
@@ -719,6 +723,8 @@
 				36CFCC251BC1451000F1C2DC /* LightLogic.h */,
 				36CFCC271BC54C3600F1C2DC /* Fader.cpp */,
 				36CFCC281BC54C3600F1C2DC /* Fader.h */,
+				36CFCC291BC5647F00F1C2DC /* SevSeg.cpp */,
+				36CFCC2A1BC5647F00F1C2DC /* SevSeg.h */,
 				36CFCB921BC1047400F1C2DC /* Sketchbook */,
 				AAAA151004130016AA000000 /* Resources */,
 				36CFCB941BC1047400F1C2DC /* Configurations */,
@@ -1552,6 +1558,7 @@
 				362FCC071BC1047500F1C2DC /* bathroom_light.ino in Sources */,
 				AA2A151004130016AA000005 /* Arduino.h in Sources */,
 				AA2A151004130016AA000006 /* CDC.cpp in Sources */,
+				36CFCC2C1BC6452900F1C2DC /* Fader.cpp in Sources */,
 				AA2A151004130016AA000007 /* Client.h in Sources */,
 				AA2A151004130016AA000008 /* HID.cpp in Sources */,
 				AA2A151004130016AA000009 /* HardwareSerial.cpp in Sources */,
@@ -1751,6 +1758,7 @@
 				AA2A151004130016AA0000D7 /* Sensors.cpp in Sources */,
 				AA2A151004130016AA0000D8 /* Squawk.cpp in Sources */,
 				AA2A151004130016AA0000D9 /* Squawk.h in Sources */,
+				36CFCC2B1BC6452400F1C2DC /* SevSeg.cpp in Sources */,
 				AA2A151004130016AA0000DA /* SquawkSD.cpp in Sources */,
 				AA2A151004130016AA0000DB /* SquawkSD.h in Sources */,
 				36CFCC261BC1451000F1C2DC /* LightLogic.cpp in Sources */,
