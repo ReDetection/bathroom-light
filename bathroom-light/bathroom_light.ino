@@ -32,7 +32,6 @@ LightState state;
 Fader fader;
 SevSeg display;
 SevSeg leftDisplay;
-unsigned char movementsCount;
 unsigned long lastDurationAdd;
 unsigned long lastBrightnessSwitch;
 unsigned long lastMinuteTick;
@@ -63,10 +62,11 @@ void setup() {
 void loop() {
     
     if (digitalRead(movementPin) == HIGH) {
-        Bright hall = hallBrightFromRaw(analogRead(hallBrightnessPin));
+        long hallBrightness = analogRead(hallBrightnessPin);
+        Bright hall = hallBrightFromRaw(hallBrightness);
         Bright bath = bathBrightFromRaw(analogRead(bathBrightnessPin));
         state = movementTriggered(state, hall, bath);
-        movementsCount++;
+        leftDisplay.setNumber(hallBrightness > 99 ? 99 : hallBrightness, 0);
     }
     
     unsigned long now = millis();
@@ -91,7 +91,6 @@ void loop() {
     
     display.setNumber(state.minutesLeft > 999 ? 999 : state.minutesLeft, 0);
     display.refreshDisplay();
-    leftDisplay.setNumber(movementsCount % 100, 0);
     leftDisplay.refreshDisplay();
     
     analogWrite(ledsPin, fader.currentBrightness);
