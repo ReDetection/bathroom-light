@@ -44,7 +44,7 @@ void setup() {
     pinMode(brightnessButton, INPUT);
     pinMode(hallBrightnessPin, INPUT);
     pinMode(bathBrightnessPin, INPUT);
-    Serial.begin(9600);
+
     {
         byte digitPins[] = {A5, A4, A3};
         byte segmentPins[] = {2,3,4,5,6,7,8,13};
@@ -63,8 +63,6 @@ void setup() {
 void loop() {
     
     if (digitalRead(movementPin) == HIGH) {
-        
-        Serial.println("triggered movement");
         Bright hall = hallBrightFromRaw(analogRead(hallBrightnessPin));
         Bright bath = bathBrightFromRaw(analogRead(bathBrightnessPin));
         state = movementTriggered(state, hall, bath);
@@ -91,19 +89,10 @@ void loop() {
     fader.targetBrightness = ledsBrightnessFromState(state);
     fader.loop();
     
-    Serial.print("now = " );
-    Serial.print(now);
-    Serial.print(", minutesLeft = ");
-    Serial.print(state.minutesLeft);
-    Serial.print(", newB = ");
-    Serial.print(newBrightness);
-    Serial.print(", currentB = ");
-    Serial.println(currentBrightness);
     display.setNumber(state.minutesLeft > 999 ? 999 : state.minutesLeft, 0);
     display.refreshDisplay();
     movementsDisplay.setNumber(movementsCount % 100, 0);
     movementsDisplay.refreshDisplay();
-    
     
     analogWrite(ledsPin, fader.currentBrightness);
     
