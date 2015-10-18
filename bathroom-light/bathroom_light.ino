@@ -31,7 +31,7 @@ uint8_t bathBrightnessPin = A1;
 LightState state;
 Fader fader;
 SevSeg display;
-SevSeg movementsDisplay;
+SevSeg leftDisplay;
 unsigned char movementsCount;
 unsigned long lastDurationAdd;
 unsigned long lastBrightnessSwitch;
@@ -54,8 +54,8 @@ void setup() {
     {
         byte digitPins[] = {A1, A2};
         byte segmentPins[] = {2,3,4,5,6,7,8,13};
-        movementsDisplay.begin(COMMON_CATHODE, 2, digitPins, segmentPins);
-        movementsDisplay.setBrightness(10);
+        leftDisplay.begin(COMMON_CATHODE, 2, digitPins, segmentPins);
+        leftDisplay.setBrightness(10);
     }
     
 }
@@ -91,8 +91,8 @@ void loop() {
     
     display.setNumber(state.minutesLeft > 999 ? 999 : state.minutesLeft, 0);
     display.refreshDisplay();
-    movementsDisplay.setNumber(movementsCount % 100, 0);
-    movementsDisplay.refreshDisplay();
+    leftDisplay.setNumber(movementsCount % 100, 0);
+    leftDisplay.refreshDisplay();
     
     analogWrite(ledsPin, fader.currentBrightness);
     
