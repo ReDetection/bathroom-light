@@ -23,7 +23,7 @@
 
 #define trigger_minutes 3
 
-LightState movementTriggered(LightState state, Bright hallBright, Bright bathBright) {
+LightState movementTriggered(LightState state, Bright hallBright) {
     state.bright = state.minutesLeft > 0 ? state.bright : hallBright;
     state.minutesLeft = state.minutesLeft < trigger_minutes ? trigger_minutes : state.minutesLeft;
     return state;
@@ -41,10 +41,6 @@ LightState addMinutes(LightState state, int minutes) {
 
 Bright hallBrightFromRaw(int brightness) {
     return brightness > 20 ? 1 : 0;
-}
-
-Bright bathBrightFromRaw(int brightness) {
-    return 1;
 }
 
 int ledsBrightnessFromState(LightState state) {

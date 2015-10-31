@@ -17,7 +17,7 @@ typedef struct LightStateDefinition {
     
 } LightState;
 
-LightState movementTriggered(LightState state, Bright hallBright, Bright bathBright);
+LightState movementTriggered(LightState state, Bright hallBright);
 LightState changeBrightness(LightState state);
 LightState addMinutes(LightState state, int minutes);
 Bright hallBrightFromRaw(int brightness);

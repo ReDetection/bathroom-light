@@ -25,7 +25,6 @@ uint8_t movementPin = 10;
 uint8_t durationButton = 11;
 uint8_t brightnessButton = 12;
 uint8_t hallBrightnessPin = A0;
-uint8_t bathBrightnessPin = A1;
 
 LightState state;
 Fader fader;
@@ -43,7 +42,6 @@ void setup() {
     pinMode(durationButton, INPUT);
     pinMode(brightnessButton, INPUT);
     pinMode(hallBrightnessPin, INPUT);
-    pinMode(bathBrightnessPin, INPUT);
 }
 
 void loop() {
@@ -51,8 +49,7 @@ void loop() {
     
     if (digitalRead(movementPin) == HIGH) {
         Bright hall = hallBrightFromRaw(analogRead(hallBrightnessPin));
-        Bright bath = bathBrightFromRaw(analogRead(bathBrightnessPin));
-        state = movementTriggered(state, hall, bath);
+        state = movementTriggered(state, hall);
         if ((now - lastTurnOff) < 5000) {
             state.bright = lastBrightness;
         }
