@@ -17,11 +17,24 @@ typedef struct LightStateDefinition {
     
 } LightState;
 
-LightState movementTriggered(LightState state, Bright hallBright);
-LightState changeBrightness(LightState state);
-LightState addMinutes(LightState state, int minutes);
-Bright hallBrightFromRaw(int brightness);
-Bright bathBrightFromRaw(int brightness);
-int ledsBrightnessFromState(LightState state);
+class LightLogic {
+public:
+    //you definitely want to configure these before running
+    unsigned long (*millis)();
+    int (*hallBrightness)();
+    
+    void movementDetected();
+    void addMinutes(int minutes);
+    void changeBrightness();
+    void loop();
+    int currentBrightness();
+    
+private:
+    LightState state;
+    unsigned long lastTurnOff;
+    unsigned long lastMinuteTick;
+    bool wasOn;
+    Bright lastBrightness;
+};
 
 #endif /* defined(__bathroom_light__light_logic__) */

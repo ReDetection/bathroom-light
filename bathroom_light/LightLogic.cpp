@@ -29,21 +29,16 @@ LightState movementTriggered(LightState state, Bright hallBright) {
     return state;
 }
 
-LightState changeBrightness(LightState state) {
+void LightLogic::changeBrightness() {
     state.bright = 1 - state.bright;
-    return state;
+    lastBrightness = state.bright;
 }
 
-LightState addMinutes(LightState state, int minutes) {
+void LightLogic::addMinutes(int minutes) {
     state.minutesLeft += minutes;
-    return state;
 }
 
-Bright hallBrightFromRaw(int brightness) {
-    return brightness > 20 ? 1 : 0;
-}
-
-int ledsBrightnessFromState(LightState state) {
+int LightLogic::currentBrightness() {
     if (state.minutesLeft > 0) {
         return state.bright ? 255 : 3;
     } else {
@@ -51,3 +46,24 @@ int ledsBrightnessFromState(LightState state) {
     }
 }
 
+void LightLogic::loop() {
+    unsigned long now = millis();
+    
+    if (state.minutesLeft > 0 && now - lastMinuteTick >= 60000) {
+        state.minutesLeft--;
+        lastMinuteTick = now;
+        if (state.minutesLeft == 0) {
+            lastTurnOff = now;
+        }
+    }
+}
+
+void LightLogic::movementDetected() {
+    Bright hall = hallBrightness() > 20 ? 1 : 0;
+    state = movementTriggered(state, hall);
+    if ((millis() - lastTurnOff) < 5000) {
+        state.bright = lastBrightness;
+    }
+    lastBrightness = state.bright;
+    
+}

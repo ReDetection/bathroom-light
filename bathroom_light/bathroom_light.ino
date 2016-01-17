@@ -26,15 +26,15 @@ uint8_t durationButton = 11;
 uint8_t brightnessButton = 12;
 uint8_t hallBrightnessPin = A0;
 
-LightState state;
+LightLogic logic;
 Fader fader;
+//todo: extract buttons to separate lib (or find one)
 unsigned long lastDurationAdd;
 unsigned long lastBrightnessSwitch;
-unsigned long lastMinuteTick;
-unsigned long lastTurnOff;
-bool wasOn;
-Bright lastBrightness;
 
+int readHallBrightness() {
+    return analogRead(hallBrightnessPin);
+}
 
 void setup() {
     pinMode(ledsPin, OUTPUT);
@@ -42,40 +42,31 @@ void setup() {
     pinMode(durationButton, INPUT);
     pinMode(brightnessButton, INPUT);
     pinMode(hallBrightnessPin, INPUT);
+    
+    logic.millis = millis;
+    logic.hallBrightness = readHallBrightness;
 }
 
 void loop() {
     unsigned long now = millis();
     
     if (digitalRead(movementPin) == HIGH) {
-        Bright hall = hallBrightFromRaw(analogRead(hallBrightnessPin));
-        state = movementTriggered(state, hall);
-        if ((now - lastTurnOff) < 5000) {
-            state.bright = lastBrightness;
-        }
-        lastBrightness = state.bright;
+        logic.movementDetected();
     }
     
     if (digitalRead(durationButton) == HIGH && (now - lastDurationAdd) > 200) {
-        state = addMinutes(state, 10);
+        logic.addMinutes(10);
         lastDurationAdd = now;
     }
     
     if (digitalRead(brightnessButton) == HIGH && (now - lastBrightnessSwitch) > 200) {
-        state = changeBrightness(state);
-        lastBrightness = state.bright;
+        logic.changeBrightness();
         lastBrightnessSwitch = now;
     }
     
-    if (state.minutesLeft > 0 && now - lastMinuteTick >= 60000) {
-        state.minutesLeft--;
-        lastMinuteTick = now;
-        if (state.minutesLeft == 0) {
-            lastTurnOff = now;
-        }
-    }
+    logic.loop();
     
-    fader.targetBrightness = ledsBrightnessFromState(state);
+    fader.targetBrightness = logic.currentBrightness();
     fader.loop();
     
     analogWrite(ledsPin, fader.currentBrightness);
