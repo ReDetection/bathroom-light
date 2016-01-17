@@ -22,6 +22,7 @@ public:
     //you definitely want to configure these before running
     unsigned long (*millis)();
     int (*hallBrightness)();
+    int triggerMinutes;
     
     void movementDetected();
     void addMinutes(int minutes);

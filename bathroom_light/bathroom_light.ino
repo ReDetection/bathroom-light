@@ -45,6 +45,7 @@ void setup() {
     
     logic.millis = millis;
     logic.hallBrightness = readHallBrightness;
+    logic.triggerMinutes = 3;
 }
 
 void loop() {

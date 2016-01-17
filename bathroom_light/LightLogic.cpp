@@ -20,15 +20,6 @@
  
  
  */
-
-#define trigger_minutes 3
-
-LightState movementTriggered(LightState state, Bright hallBright) {
-    state.bright = state.minutesLeft > 0 ? state.bright : hallBright;
-    state.minutesLeft = state.minutesLeft < trigger_minutes ? trigger_minutes : state.minutesLeft;
-    return state;
-}
-
 void LightLogic::changeBrightness() {
     state.bright = 1 - state.bright;
     lastBrightness = state.bright;
@@ -59,11 +50,12 @@ void LightLogic::loop() {
 }
 
 void LightLogic::movementDetected() {
-    Bright hall = hallBrightness() > 20 ? 1 : 0;
-    state = movementTriggered(state, hall);
-    if ((millis() - lastTurnOff) < 5000) {
-        state.bright = lastBrightness;
+    if (state.minutesLeft == 0) {
+        state.bright = hallBrightness() > 20 ? 1 : 0;
+        if ((millis() - lastTurnOff) < 5000) {
+            state.bright = lastBrightness;
+        }
     }
+    state.minutesLeft = state.minutesLeft < triggerMinutes ? triggerMinutes : state.minutesLeft;
     lastBrightness = state.bright;
-    
 }
