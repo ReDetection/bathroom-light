@@ -8,11 +8,6 @@
 #include "../bathroom_light/LightLogic.hpp"
 
 
-/*
- ТЗ:
- можно нажать кнопку и увеличить длительность на 10 минут (хорошо бы дисплей иметь ещё)
- можно нажать кнопку и сменить яркость слабо/сильно
- */
 unsigned long millis;
 int hallBrightness;
 
@@ -90,6 +85,22 @@ TEST turnsOffAfter3Minutes() {
     PASS();
 }
 
+TEST addMinutesActuallyWorks() {
+    LightLogic logic = cleanWithState(true, 1);
+    logic.addMinutes(10);
+    millis = (11*60 - 2) * 1000;
+    logic.loop();
+    ASSERT(logic.currentBrightness() > 0);
+    PASS();
+}
+
+TEST changeBrightnessWorks() {
+    LightLogic logic = cleanWithState(false, 1);
+    logic.changeBrightness();
+    ASSERT_EQ_FMT(255, logic.currentBrightness(), "%d");
+    PASS();
+}
+
 GREATEST_MAIN_DEFS();
 
 int main(int argc, char **argv) {
@@ -100,5 +111,7 @@ int main(int argc, char **argv) {
     RUN_TEST(movementTurnsOnFor3Minutes);
     RUN_TEST(movementProlongsFor3Minutes);
     RUN_TEST(turnsOffAfter3Minutes);
+    RUN_TEST(addMinutesActuallyWorks);
+    RUN_TEST(changeBrightnessWorks);
     GREATEST_MAIN_END();
 }
