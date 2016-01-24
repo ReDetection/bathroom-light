@@ -37,6 +37,7 @@ private:
     unsigned long lastTurnOff;
     unsigned long lastMinuteTick;
     bool wasOn;
+    bool wasEverTurnedOff;
     Bright lastBrightness;
 };
 
