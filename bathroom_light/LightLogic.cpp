@@ -33,7 +33,7 @@ void LightLogic::loop() {
     unsigned long now = millis();
     
     if (state.minutesLeft > 0 && now - lastMinuteTick >= 60000) {
-        state.minutesLeft--;
+        state.minutesLeft -= (now - lastMinuteTick) / 60000;
         lastMinuteTick = now;
         if (state.minutesLeft == 0) {
             wasEverTurnedOff = true;
