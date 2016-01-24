@@ -8,6 +8,10 @@
 
 #include "LightLogic.hpp"
 
+LightLogic::LightLogic() {
+    state.minutesLeft = 0;
+}
+
 void LightLogic::changeBrightness() {
     state.bright = 1 - state.bright;
     lastBrightness = state.bright;

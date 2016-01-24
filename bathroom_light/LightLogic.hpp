@@ -19,6 +19,8 @@ typedef struct LightStateDefinition {
 
 class LightLogic {
 public:
+    LightLogic();
+    
     //you definitely want to configure these before running
     unsigned long (*millis)();
     int (*hallBrightness)();
