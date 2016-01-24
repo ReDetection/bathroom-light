@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 ReDetection. All rights reserved.
 //
 
-#include "LightLogic.h"
+#include "LightLogic.hpp"
 
 void LightLogic::changeBrightness() {
     state.bright = 1 - state.bright;
