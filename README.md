@@ -15,7 +15,7 @@ It's so much useful so I even removed regular bulb — it became redundant.
 
 ![Breadboard](schematics/schematics_bb.png)
 
-## "I have no another microcontroller!", "I have Arduino board instead"... ##
+## "I have another microcontroller!", "I have Arduino board instead"... ##
 
 It's okay. This code was initially written for Arduino Nano and later moved to single ATMega328 processor. Just change pins definition and you're done. It should be even compatible with ATTiny processors.
 
