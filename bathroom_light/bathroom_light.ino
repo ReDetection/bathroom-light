@@ -17,7 +17,7 @@
 //
 
 #include "Arduino.h"
-#include "LightLogic.h"
+#include "LightLogic.hpp"
 #include "Fader.h"
 
 uint8_t ledsPin = 9;
