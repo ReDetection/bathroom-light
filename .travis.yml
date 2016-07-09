@@ -3,6 +3,6 @@ language: cpp
 compiler: gcc
 
 before_script:
-  - cd /tests
+  - cd tests
 
 script: $CXX LigthLogic_tests.cpp -o tests && ./tests
