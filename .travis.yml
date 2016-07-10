@@ -5,4 +5,4 @@ compiler: gcc
 before_script:
   - cd tests
 
-script: $CXX LigthLogic_tests.cpp -o tests && ./tests
+script: $CXX LigthLogic_tests.cpp ../bathroom_light/LightLogic.cpp -o tests && ./tests
