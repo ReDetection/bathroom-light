@@ -1,4 +1,4 @@
-# Automatic LED light in my bathroom #
+# Automatic LED light in my bathroom ![travis-badge](https://api.travis-ci.org/ReDetection/bathroom-light.svg)#
 
 It's so much useful so I even removed regular bulb — it became redundant. 
 
