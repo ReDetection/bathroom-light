@@ -7,7 +7,6 @@ LightLogic::LightLogic() {
 
 void LightLogic::changeBrightness() {
     isBright = !isBright;
-    lastBrightness = isBright;
 }
 
 void LightLogic::addMinutes(int minutes) {
@@ -39,13 +38,10 @@ void LightLogic::movementDetected() {
     unsigned long now = millis();
 
     if (minutesLeft == 0) {
-        if (wasEverTurnedOff && (now - lastTurnOff) < 5000) {
-            isBright = lastBrightness;
-        } else {
+        if (!wasEverTurnedOff || (now - lastTurnOff) >= 5000) {
             isBright = hallBrightness() > 20;
         }
     }
     minutesLeft = minutesLeft < triggerMinutes ? triggerMinutes : minutesLeft;
-    lastBrightness = isBright;
     lastMinuteTick = now;
 }

@@ -77,6 +77,17 @@ TEST movementProlongsFor3Minutes() {
     PASS();
 }
 
+TEST movementTurnsBackOnQuicklyAfterTurnOff() {
+    LightLogic logic = cleanWithState(true, 1);
+    millis = (60 + 1) * 1000;
+    logic.loop();
+    millis = (60 + 2) * 1000;
+    hallBrightness = 0;
+    logic.movementDetected();
+    ASSERT_EQ(logic.currentBrightness(), 255);
+    PASS();
+}
+
 TEST turnsOffAfter3Minutes() {
     LightLogic logic = cleanLogic();
     logic.movementDetected();
@@ -120,6 +131,7 @@ int main(int argc, char **argv) {
     RUN_TEST(whenBrightInHallShouldTurnOnBright);
     RUN_TEST(movementShouldNotAffectRunningBulb);
     RUN_TEST(movementTurnsOnFor3Minutes);
+    RUN_TEST(movementTurnsBackOnQuicklyAfterTurnOff);
     RUN_TEST(movementProlongsFor3Minutes);
     RUN_TEST(movementDoesFairTimerReset);
     RUN_TEST(turnsOffAfter3Minutes);

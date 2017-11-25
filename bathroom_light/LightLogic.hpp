@@ -23,7 +23,6 @@ private:
     unsigned long lastTurnOff;
     unsigned long lastMinuteTick;
     bool wasEverTurnedOff;
-    bool lastBrightness;
 };
 
 #endif /* defined(__bathroom_light__light_logic__) */
