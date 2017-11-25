@@ -10,6 +10,7 @@
 
 LightLogic::LightLogic() {
     state.minutesLeft = 0;
+    wasEverTurnedOff = false;
 }
 
 void LightLogic::changeBrightness() {
@@ -43,8 +44,10 @@ void LightLogic::loop() {
 }
 
 void LightLogic::movementDetected() {
+    unsigned long now = millis();
+
     if (state.minutesLeft == 0) {
-        if (wasEverTurnedOff && (millis() - lastTurnOff) < 5000) {
+        if (wasEverTurnedOff && (now - lastTurnOff) < 5000) {
             state.bright = lastBrightness;
         } else {
             state.bright = hallBrightness() > 20 ? 1 : 0;
@@ -52,5 +55,5 @@ void LightLogic::movementDetected() {
     }
     state.minutesLeft = state.minutesLeft < triggerMinutes ? triggerMinutes : state.minutesLeft;
     lastBrightness = state.bright;
+    lastMinuteTick = now;
 }
-

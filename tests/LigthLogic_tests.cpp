@@ -24,6 +24,7 @@ static LightLogic cleanLogic() {
     logic.millis = returnMillis;
     logic.hallBrightness = returnHallBrightness;
     logic.triggerMinutes = 3;
+    millis = 0;
     return logic;
 }
 
@@ -101,6 +102,16 @@ TEST changeBrightnessWorks() {
     PASS();
 }
 
+TEST movementDoesFairTimerReset() {
+    LightLogic logic = cleanWithState(false, 1);
+    millis = 58 * 1000;
+    logic.movementDetected();
+    millis = (60*3 + 57) * 1000;
+    logic.loop();
+    ASSERT(logic.currentBrightness() > 0);
+    PASS();
+}
+
 GREATEST_MAIN_DEFS();
 
 int main(int argc, char **argv) {
@@ -110,6 +121,7 @@ int main(int argc, char **argv) {
     RUN_TEST(movementShouldNotAffectRunningBulb);
     RUN_TEST(movementTurnsOnFor3Minutes);
     RUN_TEST(movementProlongsFor3Minutes);
+    RUN_TEST(movementDoesFairTimerReset);
     RUN_TEST(turnsOffAfter3Minutes);
     RUN_TEST(addMinutesActuallyWorks);
     RUN_TEST(changeBrightnessWorks);
