@@ -30,8 +30,8 @@ static LightLogic cleanLogic() {
 
 static LightLogic cleanWithState(bool bright, unsigned char minutesLeft) {
     LightLogic logic = cleanLogic();
-    logic.state.minutesLeft = minutesLeft;
-    logic.state.bright = bright ? 1 : 0;
+    logic.minutesLeft = minutesLeft;
+    logic.isBright = bright;
     return logic;
 }
 

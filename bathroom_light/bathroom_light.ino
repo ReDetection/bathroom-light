@@ -1,21 +1,3 @@
-//
-// bathroom-light
-//
-// Automatic bathroom nightlight
-// Developed with [embedXcode](http://embedXcode.weebly.com)
-//
-// Author 		Serg
-// 				ReDetection
-//
-// Date			04/10/15 12:53
-// Version		0.1
-//
-// Copyright	© ReDetection, 2015
-// Licence		MIT
-//
-// See         ReadMe.txt for references
-//
-
 #include "Arduino.h"
 #include "LightLogic.hpp"
 #include "Fader.h"

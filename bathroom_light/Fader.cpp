@@ -1,21 +1,3 @@
-//
-// Fader.cpp 
-// Library C++ code
-// ----------------------------------
-// Developed with embedXcode 
-// http://embedXcode.weebly.com
-//
-// Project 		bathroom-light
-//
-// Created by 	sbuglakov, 07/10/15 18:48
-// 				ReDetection
-//
-// Copyright 	© sbuglakov, 2015
-// Licence     <#license#>
-//
-// See 			Fader.h and ReadMe.txt for references
-//
-
 #include "Fader.h"
 
 Fader::Fader() {

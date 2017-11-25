@@ -1,30 +1,22 @@
-//
-//  light-logic.c
-//  bathroom-light
-//
-//  Created by sbuglakov on 04/10/15.
-//  Copyright (c) 2015 ReDetection. All rights reserved.
-//
-
 #include "LightLogic.hpp"
 
 LightLogic::LightLogic() {
-    state.minutesLeft = 0;
+    minutesLeft = 0;
     wasEverTurnedOff = false;
 }
 
 void LightLogic::changeBrightness() {
-    state.bright = 1 - state.bright;
-    lastBrightness = state.bright;
+    isBright = !isBright;
+    lastBrightness = isBright;
 }
 
 void LightLogic::addMinutes(int minutes) {
-    state.minutesLeft += minutes;
+    minutesLeft += minutes;
 }
 
 int LightLogic::currentBrightness() {
-    if (state.minutesLeft > 0) {
-        return state.bright ? 255 : 3;
+    if (minutesLeft > 0) {
+        return isBright ? 255 : 3;
     } else {
         return 0;
     }
@@ -33,10 +25,10 @@ int LightLogic::currentBrightness() {
 void LightLogic::loop() {
     unsigned long now = millis();
     
-    if (state.minutesLeft > 0 && now - lastMinuteTick >= 60000) {
-        state.minutesLeft -= (now - lastMinuteTick) / 60000;
+    if (minutesLeft > 0 && now - lastMinuteTick >= 60000) {
+        minutesLeft -= (now - lastMinuteTick) / 60000;
         lastMinuteTick = now;
-        if (state.minutesLeft == 0) {
+        if (minutesLeft == 0) {
             wasEverTurnedOff = true;
             lastTurnOff = now;
         }
@@ -46,14 +38,14 @@ void LightLogic::loop() {
 void LightLogic::movementDetected() {
     unsigned long now = millis();
 
-    if (state.minutesLeft == 0) {
+    if (minutesLeft == 0) {
         if (wasEverTurnedOff && (now - lastTurnOff) < 5000) {
-            state.bright = lastBrightness;
+            isBright = lastBrightness;
         } else {
-            state.bright = hallBrightness() > 20 ? 1 : 0;
+            isBright = hallBrightness() > 20;
         }
     }
-    state.minutesLeft = state.minutesLeft < triggerMinutes ? triggerMinutes : state.minutesLeft;
-    lastBrightness = state.bright;
+    minutesLeft = minutesLeft < triggerMinutes ? triggerMinutes : minutesLeft;
+    lastBrightness = isBright;
     lastMinuteTick = now;
 }
