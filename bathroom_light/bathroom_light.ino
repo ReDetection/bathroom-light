@@ -1,13 +1,16 @@
 #include "Arduino.h"
 #include "LightLogic.hpp"
 #include "Fader.h"
+#include <SevSeg.h>
 
 uint8_t ledsPin = 9;
-uint8_t movementPin = 10;
-uint8_t durationButton = 11;
-uint8_t brightnessButton = 12;
-uint8_t hallBrightnessPin = A0;
+uint8_t movementPin = 15;
+uint8_t durationButton = 3;
+uint8_t brightnessButton = 2;
+uint8_t hallBrightnessPin = A2;
 
+
+SevSeg sevseg;
 LightLogic logic;
 Fader fader;
 //todo: extract buttons to separate lib (or find one)
@@ -28,6 +31,13 @@ void setup() {
     logic.millis = millis;
     logic.hallBrightness = readHallBrightness;
     logic.triggerMinutes = 3;
+
+    byte numDigits = 2;   
+    byte digitPins[] = {17, 14};
+    byte segmentPins[] = {12, 11, 5, 6, 7, 8, 10, 4};
+  
+    sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
+    sevseg.setBrightness(10);
 }
 
 void loop() {
@@ -53,6 +63,13 @@ void loop() {
     fader.loop();
     
     analogWrite(ledsPin, fader.currentBrightness);
-    
-    delay(12);
+
+    unsigned char minutesLeft = logic.timeLeft();
+    minutesLeft = minutesLeft > 99 ? 99 : minutesLeft;
+    sevseg.setNumber(minutesLeft, 0);
+    unsigned long delayBegin = millis();
+    while( millis() - delayBegin < 12) {
+      sevseg.refreshDisplay();
+      digitalWrite(4, (millis() / 1000) % 2 == 0 ? HIGH : LOW);
+    }
 }

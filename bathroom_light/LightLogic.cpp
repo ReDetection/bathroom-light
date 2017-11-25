@@ -5,6 +5,10 @@ LightLogic::LightLogic() {
     wasEverTurnedOff = false;
 }
 
+unsigned char LightLogic::timeLeft() const {
+    return minutesLeft;
+}
+
 void LightLogic::changeBrightness() {
     isBright = !isBright;
 }

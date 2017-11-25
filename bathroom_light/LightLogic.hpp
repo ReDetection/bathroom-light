@@ -15,6 +15,7 @@ public:
     void changeBrightness();
     void loop();
     int currentBrightness();
+    unsigned char timeLeft() const;
     
 private:
     unsigned char minutesLeft;
