@@ -8,6 +8,7 @@ uint8_t movementPin = 15;
 uint8_t durationButton = 3;
 uint8_t brightnessButton = 2;
 uint8_t hallBrightnessPin = A2;
+unsigned long now;
 
 
 SevSeg sevseg;
@@ -41,8 +42,8 @@ void setup() {
 }
 
 void loop() {
-    unsigned long now = millis();
-    
+    now = millis();
+
     if (digitalRead(movementPin) == HIGH) {
         logic.movementDetected();
     }
@@ -67,9 +68,8 @@ void loop() {
     unsigned char minutesLeft = logic.timeLeft();
     minutesLeft = minutesLeft > 99 ? 99 : minutesLeft;
     sevseg.setNumber(minutesLeft, 0);
-    unsigned long delayBegin = millis();
-    while( millis() - delayBegin < 12) {
+    while(millis() - now < 12) {
       sevseg.refreshDisplay();
-      digitalWrite(4, (millis() / 1000) % 2 == 0 ? HIGH : LOW);
     }
+    digitalWrite(4, (now / 1000) % 2 == 0 ? HIGH : LOW);
 }
