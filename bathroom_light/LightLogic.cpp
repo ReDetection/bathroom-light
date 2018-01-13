@@ -15,9 +15,10 @@ void LightLogic::changeBrightness() {
 
 void LightLogic::addMinutes(int minutes) {
     minutesLeft += minutes;
+    lastMinuteTick = millis();
 }
 
-int LightLogic::currentBrightness() {
+int LightLogic::currentBrightness() const {
     if (minutesLeft > 0) {
         return isBright ? 255 : 3;
     } else {
@@ -46,6 +47,8 @@ void LightLogic::movementDetected() {
             isBright = hallBrightness() > 20;
         }
     }
-    minutesLeft = minutesLeft < triggerMinutes ? triggerMinutes : minutesLeft;
-    lastMinuteTick = now;
+    if (minutesLeft <= triggerMinutes) {
+      minutesLeft = triggerMinutes;
+      lastMinuteTick = now;
+    }
 }
