@@ -17,6 +17,10 @@ Fader fader;
 //todo: extract buttons to separate lib (or find one)
 unsigned long lastDurationAdd;
 unsigned long lastBrightnessSwitch;
+unsigned long lastSerialMovementReport;
+bool forceNextMovementReport = true;
+unsigned long lastSerialStateReport;
+bool forceNextStateReport = true;
 
 int readHallBrightness() {
     return analogRead(hallBrightnessPin);
@@ -39,6 +43,28 @@ void setup() {
   
     sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
     sevseg.setBrightness(10);
+
+    Serial.begin(9600);
+    Serial.write('I');
+}
+
+void reportState() {
+    Serial.write('S');
+    int brightness = logic.currentBrightness();
+    if (brightness == 255) {
+      Serial.write('b');
+    } else if (brightness == 0) {
+      Serial.write('o');
+    } else {
+      Serial.write('d');
+    }
+    int minutesLeft = logic.timeLeft();
+    Serial.write(minutesLeft / 100 + '0');
+    minutesLeft = minutesLeft % 100;
+    Serial.write(minutesLeft / 10 + '0');
+    minutesLeft = minutesLeft % 10;
+    Serial.write(minutesLeft + '0');
+    Serial.write(10);
 }
 
 void loop() {
@@ -46,16 +72,25 @@ void loop() {
 
     if (digitalRead(movementPin) == HIGH) {
         logic.movementDetected();
+        if (forceNextMovementReport || now - lastSerialMovementReport > 500) {
+          forceNextMovementReport = false;
+          lastSerialMovementReport = now;
+          Serial.write('M');
+        }
     }
     
     if (digitalRead(durationButton) == HIGH && (now - lastDurationAdd) > 200) {
         logic.addMinutes(10);
         lastDurationAdd = now;
+        Serial.write('A');
+        forceNextStateReport = true;
     }
     
     if (digitalRead(brightnessButton) == HIGH && (now - lastBrightnessSwitch) > 200) {
         logic.changeBrightness();
         lastBrightnessSwitch = now;
+        Serial.write('B');
+        forceNextStateReport = true;
     }
     
     logic.loop();
@@ -72,4 +107,10 @@ void loop() {
       sevseg.refreshDisplay();
     }
     digitalWrite(4, (now / 1000) % 2 == 0 ? HIGH : LOW);
+
+    if (forceNextStateReport || now - lastSerialStateReport > 1000) {
+      forceNextStateReport = false;
+      lastSerialStateReport = now;
+      reportState();
+    }
 }
