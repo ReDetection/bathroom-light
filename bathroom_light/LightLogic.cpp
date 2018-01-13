@@ -18,6 +18,12 @@ void LightLogic::addMinutes(int minutes) {
     lastMinuteTick = millis();
 }
 
+void LightLogic::setState(bool bright, unsigned char minutes) {
+    isBright = bright;
+    minutesLeft = minutes;
+    lastMinuteTick = millis();
+}
+
 int LightLogic::currentBrightness() const {
     if (minutesLeft > 0) {
         return isBright ? 255 : 3;

@@ -67,6 +67,39 @@ void reportState() {
     Serial.write(10);
 }
 
+int waitForSerial(unsigned long leeway) {
+  unsigned long start = millis();
+  while (Serial.available() == 0 && millis() - start < leeway);
+  return Serial.read();
+}
+
+int waitForSerialNumber(uint8_t digits, unsigned long digitLeeway) {
+  int result = 0;
+  for (uint8_t i = 0; i < digits; i++) {
+    int digit = waitForSerial(digitLeeway) - '0';
+    if (digit < 0 && digit >= 10) {
+      return -1;
+    }
+    result = result * 10 + digit;
+  }
+  return result;
+}
+
+void parseCommand() {
+  int command = Serial.read();
+  if (command == 'S') {
+    int mode = waitForSerial(50);
+    if (mode != 'b' && mode != 'd' && mode != 'o') {
+      return;
+    }
+    int minutes = waitForSerialNumber(3, 50);    
+    if (minutes < 0) {
+      return;
+    }
+    logic.setState(mode == 'b', mode == 'o' ? 0 : minutes);
+  }
+}
+
 void loop() {
     now = millis();
 
@@ -112,5 +145,9 @@ void loop() {
       forceNextStateReport = false;
       lastSerialStateReport = now;
       reportState();
+    }
+
+    if (Serial.available() > 0) {
+      parseCommand();
     }
 }

@@ -16,6 +16,7 @@ public:
     void loop();
     int currentBrightness() const;
     unsigned char timeLeft() const;
+    void setState(bool bright, unsigned char minutes);
     
 private:
     unsigned char minutesLeft;
