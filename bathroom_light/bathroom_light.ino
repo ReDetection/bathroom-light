@@ -99,6 +99,37 @@ int waitForSerialNumber(uint8_t digits, unsigned long digitLeeway) {
   return result;
 }
 
+void reportSettings() {
+  Serial.write('e');
+  reportNumber(logic.hallBrightnessThreshold, 4);
+  Serial.write('b');
+  reportNumber(logic.maximumBrightness, 3);
+  Serial.write('d');
+  reportNumber(logic.darkBrightness, 3);
+  Serial.write('m');
+  reportNumber(logic.triggerMinutes, 3);
+  Serial.write(10);
+}
+
+void parseSettings() {
+  int number = waitForSerialNumber(4, 50);
+  if (number < 0 || number > 1023) return;
+  logic.hallBrightnessThreshold = number;
+  if (waitForSerial(50) != 'b') return;
+  number = waitForSerialNumber(3, 50);
+  if (number < 0 || number > 255) return;
+  logic.maximumBrightness = number;
+  if (waitForSerial(50) != 'd') return;
+  number = waitForSerialNumber(3, 50);
+  if (number < 0 || number > 255) return;
+  logic.darkBrightness = number;
+  if (waitForSerial(50) != 'm') return;
+  number = waitForSerialNumber(3, 50);
+  if (number < 0 || number > 255) return;
+  logic.triggerMinutes = number;
+  reportSettings();
+}
+
 void parseCommand() {
   int command = Serial.read();
   if (command == 'S') {
@@ -112,14 +143,19 @@ void parseCommand() {
     }
     logic.setState(mode == 'b', mode == 'o' ? 0 : minutes);
     
-  } else if (command == 'R') {
+  } else if (command == 'O') {
     int mode = waitForSerial(50);
     lastReportModeChange = now;
     if (mode == HallBrightness) {
-       reportMode = HallBrightness;
-       return;
+      reportMode = HallBrightness;
+      return;
     }
     reportMode = None;
+  } else if (command == 'R') {
+    reportSettings();
+
+  } else if (command == 'W') {
+    parseSettings();
   }
 }
 

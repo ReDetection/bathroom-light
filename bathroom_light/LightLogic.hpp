@@ -11,6 +11,7 @@ public:
     unsigned char triggerMinutes = 3;
     unsigned char maximumBrightness = 255;
     unsigned char darkBrightness = 3;
+    unsigned int hallBrightnessThreshold = 20;
     
     void movementDetected();
     void addMinutes(int minutes);

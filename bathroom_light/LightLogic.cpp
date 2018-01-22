@@ -50,7 +50,7 @@ void LightLogic::movementDetected() {
 
     if (minutesLeft == 0) {
         if (!wasEverTurnedOff || (now - lastTurnOff) >= 5000) {
-            isBright = hallBrightness() > 20;
+            isBright = hallBrightness() > hallBrightnessThreshold;
         }
     }
     if (minutesLeft <= triggerMinutes) {
