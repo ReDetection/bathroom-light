@@ -35,7 +35,6 @@ void setup() {
     
     logic.millis = millis;
     logic.hallBrightness = readHallBrightness;
-    logic.triggerMinutes = 3;
 
     byte numDigits = 2;   
     byte digitPins[] = {17, 14};
@@ -51,7 +50,7 @@ void setup() {
 void reportState() {
     Serial.write('S');
     int brightness = logic.currentBrightness();
-    if (brightness == 255) {
+    if (brightness == logic.maximumBrightness) {
       Serial.write('b');
     } else if (brightness == 0) {
       Serial.write('o');

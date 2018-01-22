@@ -26,7 +26,7 @@ void LightLogic::setState(bool bright, unsigned char minutes) {
 
 int LightLogic::currentBrightness() const {
     if (minutesLeft > 0) {
-        return isBright ? 255 : 3;
+        return isBright ? maximumBrightness : darkBrightness;
     } else {
         return 0;
     }
