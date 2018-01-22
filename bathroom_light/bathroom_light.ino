@@ -10,6 +10,10 @@ uint8_t brightnessButton = 2;
 uint8_t hallBrightnessPin = A2;
 unsigned long now;
 
+typedef enum AdditionalReportModeE {
+  None = 0,
+  HallBrightness = 'H',
+} AdditionalReportMode;
 
 SevSeg sevseg;
 LightLogic logic;
@@ -21,6 +25,10 @@ unsigned long lastSerialMovementReport;
 bool forceNextMovementReport = true;
 unsigned long lastSerialStateReport;
 bool forceNextStateReport = true;
+AdditionalReportMode reportMode = None;
+unsigned long lastReportModeChange;
+unsigned long lastAdditionalReport;
+unsigned long reportRate = 100;
 
 int readHallBrightness() {
     return analogRead(hallBrightnessPin);
@@ -103,6 +111,23 @@ void parseCommand() {
       return;
     }
     logic.setState(mode == 'b', mode == 'o' ? 0 : minutes);
+    
+  } else if (command == 'R') {
+    int mode = waitForSerial(50);
+    lastReportModeChange = now;
+    if (mode == HallBrightness) {
+       reportMode = HallBrightness;
+       return;
+    }
+    reportMode = None;
+  }
+}
+
+void additionalReport() {
+  if (reportMode == HallBrightness) {
+    Serial.write('H');
+    reportNumber(readHallBrightness(), 4);
+    Serial.write(10);    
   }
 }
 
@@ -155,5 +180,12 @@ void loop() {
 
     if (Serial.available() > 0) {
       parseCommand();
+    }
+
+    if (reportMode != None && now - lastReportModeChange > 1000) {
+      reportMode = None;
+    } else if (reportMode != None && now - lastAdditionalReport > reportRate) {
+      lastAdditionalReport = now;
+      additionalReport();
     }
 }
