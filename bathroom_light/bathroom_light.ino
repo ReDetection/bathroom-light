@@ -2,6 +2,7 @@
 #include "LightLogic.hpp"
 #include "Fader.h"
 #include <SevSeg.h>
+#include <EEPROM.h>
 
 uint8_t ledsPin = 9;
 uint8_t movementPin = 15;
@@ -9,6 +10,16 @@ uint8_t durationButton = 3;
 uint8_t brightnessButton = 2;
 uint8_t hallBrightnessPin = A2;
 unsigned long now;
+
+#define STORAGE_VERSION 1
+typedef struct {
+  uint8_t version = STORAGE_VERSION; 
+  unsigned char triggerMinutes = 3;
+  unsigned char maximumBrightness = 255;
+  unsigned char darkBrightness = 3;
+  unsigned int hallBrightnessThreshold = 20;
+} Storage;
+#define CONFIG_START 20
 
 typedef enum AdditionalReportModeE {
   None = 0,
@@ -34,6 +45,31 @@ int readHallBrightness() {
     return analogRead(hallBrightnessPin);
 }
 
+void reportSettings() {
+  Serial.write('e');
+  reportNumber(logic.hallBrightnessThreshold, 4);
+  Serial.write('b');
+  reportNumber(logic.maximumBrightness, 3);
+  Serial.write('d');
+  reportNumber(logic.darkBrightness, 3);
+  Serial.write('m');
+  reportNumber(logic.triggerMinutes, 3);
+  Serial.write(10);
+}
+
+void restoreSettings() {
+  Storage storage;
+  for (unsigned int t=0; t<sizeof(storage); t++)
+    *((char*)&storage + t) = EEPROM.read(CONFIG_START + t);
+
+  if (storage.version == STORAGE_VERSION) {
+    logic.triggerMinutes = storage.triggerMinutes;
+    logic.maximumBrightness = storage.maximumBrightness;
+    logic.darkBrightness = storage.darkBrightness;
+    logic.hallBrightnessThreshold = storage.hallBrightnessThreshold;
+  }
+}
+
 void setup() {
     pinMode(ledsPin, OUTPUT);
     pinMode(movementPin, INPUT);
@@ -51,8 +87,10 @@ void setup() {
     sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
     sevseg.setBrightness(10);
 
+    restoreSettings();
+
     Serial.begin(9600);
-    Serial.write('I');
+    reportSettings();
 }
 
 void reportNumber(int number, unsigned char digits) {
@@ -99,34 +137,32 @@ int waitForSerialNumber(uint8_t digits, unsigned long digitLeeway) {
   return result;
 }
 
-void reportSettings() {
-  Serial.write('e');
-  reportNumber(logic.hallBrightnessThreshold, 4);
-  Serial.write('b');
-  reportNumber(logic.maximumBrightness, 3);
-  Serial.write('d');
-  reportNumber(logic.darkBrightness, 3);
-  Serial.write('m');
-  reportNumber(logic.triggerMinutes, 3);
-  Serial.write(10);
-}
-
 void parseSettings() {
+  Storage storage;
+  storage.version = STORAGE_VERSION;
   int number = waitForSerialNumber(4, 50);
   if (number < 0 || number > 1023) return;
   logic.hallBrightnessThreshold = number;
+  storage.hallBrightnessThreshold = number;
   if (waitForSerial(50) != 'b') return;
   number = waitForSerialNumber(3, 50);
   if (number < 0 || number > 255) return;
   logic.maximumBrightness = number;
+  storage.maximumBrightness = number;
   if (waitForSerial(50) != 'd') return;
   number = waitForSerialNumber(3, 50);
   if (number < 0 || number > 255) return;
   logic.darkBrightness = number;
+  storage.darkBrightness = number;
   if (waitForSerial(50) != 'm') return;
   number = waitForSerialNumber(3, 50);
   if (number < 0 || number > 255) return;
   logic.triggerMinutes = number;
+  storage.triggerMinutes = number;
+  
+  for (unsigned int t=0; t<sizeof(storage); t++)
+    EEPROM.write(CONFIG_START + t, *((char*)&storage + t));
+    
   reportSettings();
 }
 
@@ -145,9 +181,9 @@ void parseCommand() {
     
   } else if (command == 'O') {
     int mode = waitForSerial(50);
-    lastReportModeChange = now;
     if (mode == HallBrightness) {
       reportMode = HallBrightness;
+      lastReportModeChange = now;
       return;
     }
     reportMode = None;
