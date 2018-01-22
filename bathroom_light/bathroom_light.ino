@@ -47,6 +47,18 @@ void setup() {
     Serial.write('I');
 }
 
+void reportNumber(int number, unsigned char digits) {
+  int reverse = 0;
+  for (uint8_t i=0; i<digits; i++) {
+    reverse = reverse * 10 + number % 10;
+    number = number / 10;
+  }
+  for (uint8_t i=0; i<digits; i++) {
+    Serial.write(reverse % 10 + '0');
+    reverse = reverse / 10;
+  }
+}
+
 void reportState() {
     Serial.write('S');
     int brightness = logic.currentBrightness();
@@ -57,12 +69,7 @@ void reportState() {
     } else {
       Serial.write('d');
     }
-    int minutesLeft = logic.timeLeft();
-    Serial.write(minutesLeft / 100 + '0');
-    minutesLeft = minutesLeft % 100;
-    Serial.write(minutesLeft / 10 + '0');
-    minutesLeft = minutesLeft % 10;
-    Serial.write(minutesLeft + '0');
+    reportNumber(logic.timeLeft(), 3);
     Serial.write(10);
 }
 
