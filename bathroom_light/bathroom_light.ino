@@ -3,6 +3,7 @@
 #include "Fader.h"
 #include <SevSeg.h>
 #include <EEPROM.h>
+#include <avr/wdt.h>
 
 uint8_t ledsPin = 9;
 uint8_t movementPin = 15;
@@ -71,6 +72,7 @@ void restoreSettings() {
 }
 
 void setup() {
+    wdt_enable(WDTO_1S);
     pinMode(ledsPin, OUTPUT);
     pinMode(movementPin, INPUT);
     pinMode(durationButton, INPUT);
@@ -205,6 +207,7 @@ void additionalReport() {
 
 void loop() {
     now = millis();
+    wdt_reset();
 
     if (digitalRead(movementPin) == HIGH) {
         logic.movementDetected();
