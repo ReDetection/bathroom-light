@@ -47,7 +47,7 @@ TEST whenBrightInHallShouldTurnOnBright() {
     LightLogic logic = cleanLogic();
     hallBrightness = 1024;
     logic.movementDetected();
-    ASSERT_EQ(logic.currentBrightness(), 255);
+    ASSERT_EQ_FMT(logic.currentBrightness(), 255, "%d");
     PASS();
 }
 
@@ -84,7 +84,7 @@ TEST movementTurnsBackOnQuicklyAfterTurnOff() {
     millis = (60 + 2) * 1000;
     hallBrightness = 0;
     logic.movementDetected();
-    ASSERT_EQ(logic.currentBrightness(), 255);
+    ASSERT_EQ_FMT(logic.currentBrightness(), 255, "%d");
     PASS();
 }
 
@@ -95,7 +95,7 @@ TEST movementTurnsLongerQuicklyAfterTurnOff() {
     logic.loop();
     millis = (60 + 2) * 1000;
     logic.movementDetected();
-    ASSERT_EQ(logic.minutesLeft, 10);
+    ASSERT_EQ_FMT(logic.timeLeft(), 10, "%d");
     PASS();
 }
 
