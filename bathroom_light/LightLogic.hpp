@@ -8,11 +8,11 @@ public:
     //you definitely want to configure these before running
     unsigned long (*millis)();
     int (*hallBrightness)();
-    unsigned char triggerMinutes = 3;
-    unsigned char triggerMinutesAgain = 10;
-    unsigned char maximumBrightness = 255;
-    unsigned char darkBrightness = 3;
-    unsigned int hallBrightnessThreshold = 20;
+    unsigned char triggerMinutes;
+    unsigned char triggerMinutesAgain;
+    unsigned char maximumBrightness;
+    unsigned char darkBrightness;
+    unsigned int hallBrightnessThreshold;
     
     void movementDetected();
     void addMinutes(int minutes);

@@ -1,8 +1,13 @@
 #include "LightLogic.hpp"
 
-LightLogic::LightLogic() {
-    minutesLeft = 0;
-    wasEverTurnedOff = false;
+LightLogic::LightLogic(): 
+      triggerMinutes(3),
+      triggerMinutesAgain(10),
+      maximumBrightness(255),
+      darkBrightness(3),
+      hallBrightnessThreshold(20), 
+      minutesLeft(0), 
+      wasEverTurnedOff(false) {
 }
 
 unsigned char LightLogic::timeLeft() const {
