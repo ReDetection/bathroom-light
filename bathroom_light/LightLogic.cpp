@@ -1,12 +1,14 @@
 #include "LightLogic.hpp"
 
-LightLogic::LightLogic(): 
+LightLogic::LightLogic():
       triggerMinutes(3),
       triggerMinutesAgain(10),
       maximumBrightness(255),
       darkBrightness(3),
-      hallBrightnessThreshold(20), 
-      minutesLeft(0), 
+      hallBrightnessThreshold(20),
+      minutesLeft(0),
+      lastMinuteTick(0),
+      lastTurnOff(0),
       wasEverTurnedOff(false) {
 }
 
