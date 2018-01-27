@@ -12,13 +12,14 @@ uint8_t brightnessButton = 2;
 uint8_t hallBrightnessPin = A2;
 unsigned long now;
 
-#define STORAGE_VERSION 1
+#define STORAGE_VERSION 2
 typedef struct {
   uint8_t version = STORAGE_VERSION; 
   unsigned char triggerMinutes = 3;
   unsigned char maximumBrightness = 255;
   unsigned char darkBrightness = 3;
   unsigned int hallBrightnessThreshold = 20;
+  unsigned char triggerMinutesAgain = 10;
 } Storage;
 #define CONFIG_START 20
 
@@ -55,6 +56,8 @@ void reportSettings() {
   reportNumber(logic.darkBrightness, 3);
   Serial.write('m');
   reportNumber(logic.triggerMinutes, 3);
+  Serial.write('a');
+  reportNumber(logic.triggerMinutesAgain, 3);
   Serial.write(10);
 }
 
@@ -65,6 +68,7 @@ void restoreSettings() {
 
   if (storage.version == STORAGE_VERSION) {
     logic.triggerMinutes = storage.triggerMinutes;
+    logic.triggerMinutesAgain = storage.triggerMinutesAgain;
     logic.maximumBrightness = storage.maximumBrightness;
     logic.darkBrightness = storage.darkBrightness;
     logic.hallBrightnessThreshold = storage.hallBrightnessThreshold;
@@ -161,6 +165,11 @@ void parseSettings() {
   if (number < 0 || number > 255) return;
   logic.triggerMinutes = number;
   storage.triggerMinutes = number;
+  if (waitForSerial(50) != 'a') return;
+  number = waitForSerialNumber(3, 50);
+  if (number < 0 || number > 255) return;
+  logic.triggerMinutesAgain = number;
+  storage.triggerMinutesAgain = number;
   
   for (unsigned int t=0; t<sizeof(storage); t++)
     EEPROM.write(CONFIG_START + t, *((char*)&storage + t));

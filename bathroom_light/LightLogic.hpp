@@ -9,6 +9,7 @@ public:
     unsigned long (*millis)();
     int (*hallBrightness)();
     unsigned char triggerMinutes = 3;
+    unsigned char triggerMinutesAgain = 10;
     unsigned char maximumBrightness = 255;
     unsigned char darkBrightness = 3;
     unsigned int hallBrightnessThreshold = 20;
