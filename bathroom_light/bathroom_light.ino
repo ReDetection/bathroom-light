@@ -25,7 +25,7 @@ typedef struct {
 
 typedef enum AdditionalReportModeE {
   None = 0,
-  HallBrightness = 'H',
+  HallBrightness = 'h',
 } AdditionalReportMode;
 
 SevSeg sevseg;
@@ -223,11 +223,16 @@ void parseCommand() {
 }
 
 void additionalReport() {
+  int value;
   if (reportMode == HallBrightness) {
-    Serial.write('H');
-    reportNumber(readHallBrightness(), 4);
-    Serial.write(10);    
+    value = readHallBrightness();
+  } else {
+    return;
   }
+
+  Serial.write('O');
+  reportNumber(value, 4);
+  Serial.write(10);
 }
 
 void loop() {
