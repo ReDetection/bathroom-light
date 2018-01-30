@@ -42,6 +42,8 @@ AdditionalReportMode reportMode = None;
 unsigned long lastReportModeChange;
 unsigned long lastAdditionalReport;
 unsigned long reportRate = 100;
+int brightnessReplacement = -1;
+unsigned long brightnessReplacementStarted;
 
 int readHallBrightness() {
     return analogRead(hallBrightnessPin);
@@ -125,10 +127,18 @@ void reportState() {
     Serial.write(10);
 }
 
-int waitForSerial(unsigned long leeway) {
+int waitForSerial(unsigned long leeway, int timeoutResult) {
   unsigned long start = millis();
-  while (Serial.available() == 0 && millis() - start < leeway);
+  while (Serial.available() == 0) {
+    if (millis() - start > leeway) {
+      return timeoutResult;
+    }
+  }
   return Serial.read();
+}
+
+int waitForSerial(unsigned long leeway) {
+  return waitForSerial(leeway, -1);
 }
 
 int waitForSerialNumber(uint8_t digits, unsigned long digitLeeway) {
@@ -203,6 +213,12 @@ void parseCommand() {
 
   } else if (command == 'W') {
     parseSettings();
+    
+  } else if (command == 'L') {
+    brightnessReplacement = waitForSerialNumber(3, 50);
+    if (brightnessReplacement >= 0 && brightnessReplacement <= 255) {
+      brightnessReplacementStarted = now;
+    }
   }
 }
 
@@ -245,8 +261,12 @@ void loop() {
     
     fader.targetBrightness = logic.currentBrightness();
     fader.loop();
-    
-    analogWrite(ledsPin, fader.currentBrightness);
+
+    if (brightnessReplacement != -1 && now - brightnessReplacementStarted < 500) {
+      analogWrite(ledsPin, brightnessReplacement);
+    } else {
+      analogWrite(ledsPin, fader.currentBrightness);
+    }
 
     unsigned char minutesLeft = logic.timeLeft();
     minutesLeft = minutesLeft > 99 ? 99 : minutesLeft;
