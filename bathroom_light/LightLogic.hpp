@@ -13,6 +13,7 @@ public:
     unsigned char maximumBrightness;
     unsigned char darkBrightness;
     unsigned int hallBrightnessThreshold;
+    bool shouldRememberStartBrightness;
     
     void movementDetected();
     void addMinutes(int minutes);
@@ -23,6 +24,8 @@ public:
     void setState(bool bright, unsigned char minutes);
     
 private:
+    bool hallIsBright();
+
     unsigned char minutesLeft;
     bool isBright;
 

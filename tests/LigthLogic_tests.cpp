@@ -117,6 +117,15 @@ TEST addMinutesActuallyWorks() {
     PASS();
 }
 
+TEST keepBrightAsHallBrightnessChangedIfEnabled() {
+    LightLogic logic = cleanWithState(true, 1);
+    logic.shouldRememberStartBrightness = false;
+    hallBrightness = 0;
+    logic.loop();
+    ASSERT_EQ_FMT(3, logic.currentBrightness(), "%d");
+    PASS();
+}
+
 TEST changeBrightnessWorks() {
     LightLogic logic = cleanWithState(false, 1);
     logic.changeBrightness();
@@ -147,6 +156,7 @@ int main(int argc, char **argv) {
     RUN_TEST(movementProlongsFor3Minutes);
     RUN_TEST(movementDoesFairTimerReset);
     RUN_TEST(turnsOffAfter3Minutes);
+    RUN_TEST(keepBrightAsHallBrightnessChangedIfEnabled);
     RUN_TEST(addMinutesActuallyWorks);
     RUN_TEST(changeBrightnessWorks);
     GREATEST_MAIN_END();

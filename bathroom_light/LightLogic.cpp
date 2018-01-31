@@ -9,6 +9,7 @@ LightLogic::LightLogic():
       minutesLeft(0),
       lastMinuteTick(0),
       lastTurnOff(0),
+      shouldRememberStartBrightness(true),
       wasEverTurnedOff(false) {
 }
 
@@ -31,6 +32,10 @@ void LightLogic::setState(bool bright, unsigned char minutes) {
     lastMinuteTick = millis();
 }
 
+bool LightLogic::hallIsBright() {
+    return hallBrightness() >= hallBrightnessThreshold;
+}
+
 int LightLogic::currentBrightness() const {
     if (minutesLeft > 0) {
         return isBright ? maximumBrightness : darkBrightness;
@@ -40,15 +45,22 @@ int LightLogic::currentBrightness() const {
 }
 
 void LightLogic::loop() {
+    if (minutesLeft == 0) {
+        return;
+    }
+
     unsigned long now = millis();
-    
-    if (minutesLeft > 0 && now - lastMinuteTick >= 60000) {
+    if (now - lastMinuteTick >= 60000) {
         minutesLeft -= (now - lastMinuteTick) / 60000;
         lastMinuteTick = now;
         if (minutesLeft == 0) {
             wasEverTurnedOff = true;
             lastTurnOff = now;
+            return;
         }
+    }
+    if (!shouldRememberStartBrightness) {
+        isBright = hallIsBright();
     }
 }
 
@@ -61,7 +73,7 @@ void LightLogic::movementDetected() {
             lastMinuteTick = now;
             return;
         } else {
-            isBright = hallBrightness() >= hallBrightnessThreshold;
+            isBright = hallIsBright();
         }
     }
     if (minutesLeft <= triggerMinutes) {
