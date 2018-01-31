@@ -61,7 +61,7 @@ void LightLogic::movementDetected() {
             lastMinuteTick = now;
             return;
         } else {
-            isBright = hallBrightness() > hallBrightnessThreshold;
+            isBright = hallBrightness() >= hallBrightnessThreshold;
         }
     }
     if (minutesLeft <= triggerMinutes) {
